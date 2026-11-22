@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>غرفة الذكاء الاصطناعي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1F2937;--bg:#FFF8EA;--card:#FFF1D6;--blue:#2F6FEB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cairo',system-ui,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:3px solid var(--ink)}
+h1{margin:0;font-size:22px;font-weight:800}
+button,textarea,input,select{font-family:inherit;color:var(--ink)}
+.icon{width:44px;height:44px;border:3px solid var(--ink);border-radius:22px;background:#fff;font-size:22px;cursor:pointer}
+.room{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 8px;background:linear-gradient(#FBF3E4 0 62%,#EBCB9A 62%)}
+.st svg{width:100%;height:auto;display:block}
+.st{border-radius:18px;transition:box-shadow .2s,transform .2s}
+.st.active{box-shadow:0 0 0 4px #F5A524;transform:scale(1.02)}
+.st.done{box-shadow:0 0 0 4px #4CB36B}
+.st.err{box-shadow:0 0 0 4px #E5484D}
+.st.active .bob{animation-duration:.7s}
+.bob{animation:bob 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes bob{0%,100%{transform:translateY(0) scale(1,1)}50%{transform:translateY(-8px) scale(1.03,.97)}}
+.blink{animation:blink 4s infinite;transform-box:fill-box;transform-origin:50% 50%}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.sway{animation:sway 2s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes sway{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
+.pulse{animation:pulse 2s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@media (prefers-reduced-motion:reduce){.bob,.blink,.sway,.pulse{animation:none}}
+.ask{padding:14px 16px;background:var(--card);border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
+textarea{width:100%;min-height:84px;border:3px solid var(--ink);border-radius:18px;padding:12px 14px;font-size:17px;background:#fff;resize:vertical}
+.go{width:100%;margin-top:10px;height:52px;border:3px solid var(--ink);border-radius:26px;background:var(--blue);color:#fff;font-size:20px;font-weight:800;cursor:pointer}
+.go:disabled{opacity:.6}
+#status{margin:10px 0 0;font-size:15px;min-height:22px}
+.res{padding:14px 16px}
+.res h2{margin:0 0 8px;font-size:19px}
+iframe{width:100%;height:420px;border:3px solid var(--ink);border-radius:14px;background:#fff}
+iframe.full{position:fixed;inset:0;height:100%;z-index:50;border-radius:0}
+.row{display:flex;gap:8px;margin:10px 0}
+.row button{flex:1;height:46px;border:3px solid var(--ink);border-radius:23px;background:#fff;font-size:16px;font-weight:800;cursor:pointer}
+details{border:3px solid var(--ink);border-radius:14px;background:#fff;margin:8px 0;padding:8px 12px}
+summary{font-weight:800;cursor:pointer}
+pre{white-space:pre-wrap;word-break:break-word;direction:ltr;text-align:left;font-size:13px;max-height:260px;overflow:auto}
+dialog{width:min(92vw,520px);border:3px solid var(--ink);border-radius:22px;background:var(--bg);padding:16px}
+dialog::backdrop{background:#0008}
+dialog h3{margin:0 0 6px;font-size:20px}
+.f{margin:10px 0;padding:10px;border:2px solid var(--ink);border-radius:14px;background:#fff}
+.f b{display:block;margin-bottom:6px}
+.f input,.f select{width:100%;height:42px;margin:3px 0;border:2px solid var(--ink);border-radius:10px;padding:0 10px;font-size:15px;direction:ltr;text-align:left;background:#fff}
+.f select{direction:rtl;text-align:right}
+.f small{display:block;color:#4B5563;font-size:13px}
+.note{font-size:14px;color:#374151;margin:6px 0}
+</style>
+</head>
+<body>
+<header><h1>غرفة الذكاء الاصطناعي</h1><button class="icon" id="cfg" aria-label="الإعدادات">⚙</button></header>
+<main>
+<section class="room" aria-label="الغرفة"><div class="st" id="st-0"><svg viewBox="875 30 260 490" role="img" aria-label="المخطِّط" font-family="Cairo, sans-serif"><g class="pulse" style="animation-delay:0.0s"><rect x="893" y="40" width="224" height="86" rx="24" fill="#fff" stroke="#1F2937" stroke-width="3"/><polygon points="993,124 1017,124 1005,152" fill="#fff" stroke="#1F2937" stroke-width="3"/><rect x="991" y="120" width="28" height="8" fill="#fff"/><text id="t1-0" x="1005" y="78" text-anchor="middle" font-size="19" font-weight="800" fill="#1F2937">أحلل الطلب وأقسّمه</text><text id="t2-0" x="1005" y="104" text-anchor="middle" font-size="17" font-weight="500" fill="#1F2937">إلى مهام واضحة</text></g><g class="bob" style="animation-delay:0.0s"><g class="sway"><ellipse cx="1005" cy="160" rx="9" ry="26" transform="rotate(0 1005 186)" fill="#3FB65F" stroke="#1F2937" stroke-width="3"/><ellipse cx="988" cy="166" rx="8" ry="22" transform="rotate(-32 988 188)" fill="#3FB65F" stroke="#1F2937" stroke-width="3"/><ellipse cx="1022" cy="166" rx="8" ry="22" transform="rotate(32 1022 188)" fill="#3FB65F" stroke="#1F2937" stroke-width="3"/></g><path d="M963 204 Q963 178 1005 178 Q1047 178 1047 204 L1019 326 Q1005 338 991 326 Z" fill="#F58A1F" stroke="#1F2937" stroke-width="3"/><path d="M983 272h14M1013 292h12M999 308h10" stroke="#C96A0C" stroke-width="3" stroke-linecap="round"/><g class="blink"><circle cx="990" cy="222" r="9" fill="#fff" stroke="#1F2937" stroke-width="2.5"/><circle cx="1020" cy="222" r="9" fill="#fff" stroke="#1F2937" stroke-width="2.5"/><circle cx="992" cy="222" r="4.5" fill="#1F2937"/><circle cx="1022" cy="222" r="4.5" fill="#1F2937"/></g><path d="M993 238Q1005 258 1017 238Z" fill="#5B1F2A" stroke="#1F2937" stroke-width="3" stroke-linejoin="round"/><circle cx="975" cy="238" r="6" fill="#FF9AA8" fill-opacity=".7"/><circle cx="1035" cy="238" r="6" fill="#FF9AA8" fill-opacity=".7"/></g><rect x="905" y="322" width="200" height="22" rx="8" fill="#B5835A" stroke="#1F2937" stroke-width="3"/><rect x="917" y="344" width="176" height="96" rx="6" fill="#C9955F" stroke="#1F2937" stroke-width="3"/><circle cx="1005" cy="392" r="26" fill="#fff" stroke="#1F2937" stroke-width="3"/><text x="1005" y="402" text-anchor="middle" font-size="28" font-weight="800" fill="#1F2937">١</text><rect x="905" y="452" width="200" height="58" rx="18" fill="#FFE3C2" stroke="#1F2937" stroke-width="3"/><text x="1005" y="478" text-anchor="middle" font-size="22" font-weight="800" fill="#1F2937">المخطِّط</text><text x="1005" y="499" text-anchor="middle" font-size="14" font-weight="500" fill="#374151">الجزرة · مدير المشروع</text></svg></div><div class="st" id="st-1"><svg viewBox="605 30 260 490" role="img" aria-label="المصمِّم" font-family="Cairo, sans-serif"><g class="pulse" style="animation-delay:0.45s"><rect x="623" y="40" width="224" height="86" rx="24" fill="#fff" stroke="#1F2937" stroke-width="3"/><polygon points="723,124 747,124 735,152" fill="#fff" stroke="#1F2937" stroke-width="3"/><rect x="721" y="120" width="28" height="8" fill="#fff"/><text id="t1-1" x="735" y="78" text-anchor="middle" font-size="19" font-weight="800" fill="#1F2937">أرسم الواجهة</text><text id="t2-1" x="735" y="104" text-anchor="middle" font-size="17" font-weight="500" fill="#1F2937">والألوان والتخطيط</text></g><g class="bob" style="animation-delay:0.45s"><circle cx="735" cy="252" r="66" fill="#E5484D" stroke="#1F2937" stroke-width="3"/><ellipse cx="697" cy="224" rx="8" ry="15" transform="rotate(20 697 224)" fill="#fff" fill-opacity=".35"/><g class="sway"><ellipse cx="717" cy="188" rx="17" ry="7" transform="rotate(-20 717 188)" fill="#3FB65F" stroke="#1F2937" stroke-width="3"/><ellipse cx="753" cy="188" rx="17" ry="7" transform="rotate(20 753 188)" fill="#3FB65F" stroke="#1F2937" stroke-width="3"/><ellipse cx="735" cy="180" rx="7" ry="14" transform="rotate(0 735 190)" fill="#3FB65F" stroke="#1F2937" stroke-width="3"/></g><g class="blink"><circle cx="720" cy="244" r="9" fill="#fff" stroke="#1F2937" stroke-width="2.5"/><circle cx="750" cy="244" r="9" fill="#fff" stroke="#1F2937" stroke-width="2.5"/><circle cx="722" cy="244" r="4.5" fill="#1F2937"/><circle cx="752" cy="244" r="4.5" fill="#1F2937"/></g><path d="M723 260Q735 280 747 260Z" fill="#5B1F2A" stroke="#1F2937" stroke-width="3" stroke-linejoin="round"/><circle cx="705" cy="260" r="6" fill="#FF9AA8" fill-opacity=".7"/><circle cx="765" cy="260" r="6" fill="#FF9AA8" fill-opacity=".7"/></g><rect x="635" y="322" width="200" height="22" rx="8" fill="#B5835A" stroke="#1F2937" stroke-width="3"/><rect x="647" y="344" width="176" height="96" rx="6" fill="#C9955F" stroke="#1F2937" stroke-width="3"/><circle cx="735" cy="392" r="26" fill="#fff" stroke="#1F2937" stroke-width="3"/><text x="735" y="402" text-anchor="middle" font-size="28" font-weight="800" fill="#1F2937">٢</text><rect x="635" y="452" width="200" height="58" rx="18" fill="#FFD9DA" stroke="#1F2937" stroke-width="3"/><text x="735" y="478" text-anchor="middle" font-size="22" font-weight="800" fill="#1F2937">المصمِّم</text><text x="735" y="499" text-anchor="middle" font-size="14" font-weight="500" fill="#374151">الطماطم · واجهة المستخدم</text></svg></div><div class="st" id="st-2"><svg viewBox="335 30 260 490" role="img" aria-label="المبرمِج" font-family="Cairo, sans-serif"><g class="pulse" style="animation-delay:0.9s"><rect x="353" y="40" width="224" height="86" rx="24" fill="#fff" stroke="#1F2937" stroke-width="3"/><polygon points="453,124 477,124 465,152" fill="#fff" stroke="#1F2937" stroke-width="3"/><rect x="451" y="120" width="28" height="8" fill="#fff"/><text id="t1-2" x="465" y="78" text-anchor="middle" font-size="19" font-weight="800" fill="#1F2937">أكتب الشيفرة</text><text id="t2-2" x="465" y="104" text-anchor="middle" font-size="17" font-weight="500" fill="#1F2937">وأربط الوظائف</text></g><g class="bob" style="animation-delay:0.9s"><rect x="429" y="226" width="72" height="104" rx="28" fill="#A8DA84" stroke="#1F2937" stroke-width="3"/><circle cx="427" cy="214" r="30" fill="#2E9E5B" stroke="#1F2937" stroke-width="3"/><circle cx="503" cy="214" r="30" fill="#2E9E5B" stroke="#1F2937" stroke-width="3"/><circle cx="465" cy="192" r="36" fill="#2E9E5B" stroke="#1F2937" stroke-width="3"/><path d="M409 206A56 56 0 0 1 521 206" fill="none" stroke="#1F2937" stroke-width="6"/><rect x="399" y="198" width="14" height="30" rx="6" fill="#4F8BF9" stroke="#1F2937" stroke-width="3"/><rect x="517" y="198" width="14" height="30" rx="6" fill="#4F8BF9" stroke="#1F2937" stroke-width="3"/><g class="blink"><circle cx="450" cy="272" r="9" fill="#fff" stroke="#1F2937" stroke-width="2.5"/><circle cx="480" cy="272" r="9" fill="#fff" stroke="#1F2937" stroke-width="2.5"/><circle cx="452" cy="272" r="4.5" fill="#1F2937"/><circle cx="482" cy="272" r="4.5" fill="#1F2937"/></g><path d="M453 288Q465 308 477 288Z" fill="#5B1F2A" stroke="#1F2937" stroke-width="3" stroke-linejoin="round"/><circle cx="435" cy="288" r="6" fill="#FF9AA8" fill-opacity=".7"/><circle cx="495" cy="288" r="6" fill="#FF9AA8" fill-opacity=".7"/></g><rect x="365" y="322" width="200" height="22" rx="8" fill="#B5835A" stroke="#1F2937" stroke-width="3"/><rect x="377" y="344" width="176" height="96" rx="6" fill="#C9955F" stroke="#1F2937" stroke-width="3"/><circle cx="465" cy="392" r="26" fill="#fff" stroke="#1F2937" stroke-width="3"/><text x="465" y="402" text-anchor="middle" font-size="28" font-weight="800" fill="#1F2937">٣</text><rect x="365" y="452" width="200" height="58" rx="18" fill="#D5F5E8" stroke="#1F2937" stroke-width="3"/><text x="465" y="478" text-anchor="middle" font-size="22" font-weight="800" fill="#1F2937">المبرمِج</text><text x="465" y="499" text-anchor="middle" font-size="14" font-weight="500" fill="#374151">البروكلي · المنطق</text></svg></div><div class="st" id="st-3"><svg viewBox="65 30 260 490" role="img" aria-label="المراجِع" font-family="Cairo, sans-serif"><g class="pulse" style="animation-delay:1.35s"><rect x="83" y="40" width="224" height="86" rx="24" fill="#fff" stroke="#1F2937" stroke-width="3"/><polygon points="183,124 207,124 195,152" fill="#fff" stroke="#1F2937" stroke-width="3"/><rect x="181" y="120" width="28" height="8" fill="#fff"/><text id="t1-3" x="195" y="78" text-anchor="middle" font-size="19" font-weight="800" fill="#1F2937">أفحص الأخطاء</text><text id="t2-3" x="195" y="104" text-anchor="middle" font-size="17" font-weight="500" fill="#1F2937">وأسلّم النسخة النهائية</text></g><g class="bob" style="animation-delay:1.35s"><ellipse cx="195" cy="258" rx="48" ry="68" fill="#7B4FBF" stroke="#1F2937" stroke-width="3"/><ellipse cx="169" cy="238" rx="6" ry="16" transform="rotate(12 169 238)" fill="#fff" fill-opacity=".3"/><g class="sway"><rect x="190" y="168" width="10" height="24" rx="4" fill="#3FB65F" stroke="#1F2937" stroke-width="3"/><path d="M163 200 Q195 176 227 200 Q195 214 163 200Z" fill="#3FB65F" stroke="#1F2937" stroke-width="3"/></g><g class="blink"><circle cx="180" cy="252" r="9" fill="#fff" stroke="#1F2937" stroke-width="2.5"/><circle cx="210" cy="252" r="9" fill="#fff" stroke="#1F2937" stroke-width="2.5"/><circle cx="182" cy="252" r="4.5" fill="#1F2937"/><circle cx="212" cy="252" r="4.5" fill="#1F2937"/></g><circle cx="180" cy="252" r="15" fill="#fff" fill-opacity=".25" stroke="#1F2937" stroke-width="3"/><circle cx="210" cy="252" r="15" fill="#fff" fill-opacity=".25" stroke="#1F2937" stroke-width="3"/><path d="M183 268Q195 288 207 268Z" fill="#5B1F2A" stroke="#1F2937" stroke-width="3" stroke-linejoin="round"/><circle cx="165" cy="268" r="6" fill="#FF9AA8" fill-opacity=".7"/><circle cx="225" cy="268" r="6" fill="#FF9AA8" fill-opacity=".7"/></g><rect x="95" y="322" width="200" height="22" rx="8" fill="#B5835A" stroke="#1F2937" stroke-width="3"/><rect x="107" y="344" width="176" height="96" rx="6" fill="#C9955F" stroke="#1F2937" stroke-width="3"/><circle cx="195" cy="392" r="26" fill="#fff" stroke="#1F2937" stroke-width="3"/><text x="195" y="402" text-anchor="middle" font-size="28" font-weight="800" fill="#1F2937">٤</text><rect x="95" y="452" width="200" height="58" rx="18" fill="#E7DDF8" stroke="#1F2937" stroke-width="3"/><text x="195" y="478" text-anchor="middle" font-size="22" font-weight="800" fill="#1F2937">المراجِع</text><text x="195" y="499" text-anchor="middle" font-size="14" font-weight="500" fill="#374151">الباذنجان · ضبط الجودة</text></svg></div></section>
+<section class="ask">
+<textarea id="prompt" placeholder="اكتب طلبك، مثل: صفحة تعريفية لمدرسة أهلية بألوان هادئة"></textarea>
+<button class="go" id="go">ابدأ البناء</button>
+<p id="status" role="status"></p>
+</section>
+<section class="res" id="res" hidden>
+<h2>الناتج النهائي</h2>
+<iframe id="pv" sandbox="allow-scripts" title="معاينة"></iframe>
+<div class="row"><button id="full">ملء الشاشة</button><button id="copy">نسخ الشيفرة</button></div>
+<details><summary>مخرجات الخضروات</summary><div id="outs"></div></details>
+</section>
+</main>
+<dialog id="dlg">
+<h3>الإعدادات</h3>
+<p class="note">المفاتيح تُحفظ على جهازك فقط. أدخل مفتاحًا واحدًا على الأقل؛ Gemini وGroq مجانيان.</p>
+<div id="keys"></div>
+<div class="f"><b>توزيع الأدوار</b><div id="slots"></div><small>إن لم يتوفر مفتاح النموذج المختار ينتقل الدور تلقائيًا إلى أول نموذج له مفتاح.</small></div>
+<div class="row"><button id="save">حفظ</button><button id="close">إغلاق</button></div>
+</dialog>
+<script>
+const ROLES=[
+{name:'المخطِّط',sys:'أنت مدير مشروع. حلّل طلب المستخدم وأخرج خطة قصيرة بنقاط: الصفحات والأقسام، المكونات، الألوان، وهيكل الملف. اكتب بالعربية ولا تكتب كودًا.'},
+{name:'المصمِّم',sys:'أنت مصمم واجهات. اكتب HTML وCSS كاملين في ملف واحد وفق الخطة: اتجاه RTL، متجاوب للهاتف، بلا مكتبات خارجية، بألوان متناسقة.'},
+{name:'المبرمِج',sys:'أنت مبرمج. أضف منطق JavaScript اللازم داخل الملف نفسه دون مكتبات خارجية، وأعد الملف كاملًا في كتلة ```html واحدة.'},
+{name:'المراجِع',sys:'أنت مراجع جودة. افحص الملف وأصلح الأخطاء وتحقق من العمل على الهاتف، ثم أعد النسخة النهائية كاملة في كتلة ```html واحدة مع سطرين شرح فقط.'}
+];
+const IDLE=[['أحلل الطلب وأقسّمه','إلى مهام واضحة'],['أرسم الواجهة','والألوان والتخطيط'],['أكتب الشيفرة','وأربط الوظائف'],['أفحص الأخطاء','وأسلّم النسخة النهائية']];
+const P={
+gemini:{label:'Gemini',model:'gemini-flash-latest',url:'aistudio.google.com'},
+groq:{label:'Llama (Groq)',model:'llama-3.3-70b-versatile',url:'console.groq.com'},
+anthropic:{label:'Claude',model:'claude-haiku-5-5',url:'console.anthropic.com'},
+openai:{label:'ChatGPT',model:'gpt-4o-mini',url:'platform.openai.com'}
+};
+const ORDER=['gemini','groq','anthropic','openai'];
+const DEF={keys:{},models:{},slots:['gemini','groq','anthropic','openai']};
+const $=id=>document.getElementById(id);
+let S=load();
+function load(){try{const v=JSON.parse(localStorage.getItem('airoom')||'null');return v?{keys:v.keys||{},models:v.models||{},slots:v.slots||DEF.slots}:JSON.parse(JSON.stringify(DEF))}catch(e){return JSON.parse(JSON.stringify(DEF))}}
+function persist(){try{localStorage.setItem('airoom',JSON.stringify(S))}catch(e){}}
+function renderCfg(){
+ $('keys').innerHTML=ORDER.map(p=>`<div class="f"><b>${P[p].label}</b><input type="password" id="k-${p}" placeholder="API key" autocomplete="off" value="${S.keys[p]||''}"><input id="m-${p}" placeholder="${P[p].model}" value="${S.models[p]||''}"><small>${P[p].url}</small></div>`).join('');
+ $('slots').innerHTML=ROLES.map((r,i)=>`<label>${r.name}<select id="s-${i}">${ORDER.map(p=>`<option value="${p}"${S.slots[i]===p?' selected':''}>${P[p].label}</option>`).join('')}</select></label>`).join('');
+}
+$('cfg').onclick=()=>{renderCfg();$('dlg').showModal()};
+$('close').onclick=()=>$('dlg').close();
+$('save').onclick=()=>{ORDER.forEach(p=>{S.keys[p]=$('k-'+p).value.trim();S.models[p]=$('m-'+p).value.trim()});S.slots=ROLES.map((_,i)=>$('s-'+i).value);persist();$('dlg').close();status('تم حفظ الإعدادات.')};
+function status(t){$('status').textContent=t}
+function setSt(i,cls,a,b){const e=$('st-'+i);e.className='st '+cls;$('t1-'+i).textContent=a;$('t2-'+i).textContent=b}
+function reset(){ROLES.forEach((_,i)=>setSt(i,'',IDLE[i][0],IDLE[i][1]))}
+async function call(p,system,user){
+ const key=S.keys[p],model=S.models[p]||P[p].model;let r,d;
+ if(p==='gemini'){
+  r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(model)+':generateContent',{method:'POST',headers:{'content-type':'application/json','x-goog-api-key':key},body:JSON.stringify({systemInstruction:{parts:[{text:system}]},contents:[{role:'user',parts:[{text:user}]}],generationConfig:{maxOutputTokens:8192}})});
+  d=await r.json();if(!r.ok)throw new Error(d.error&&d.error.message||('HTTP '+r.status));
+  return((d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts)||[]).map(x=>x.text||'').join('');
+ }
+ if(p==='anthropic'){
+  r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model,max_tokens:8000,system,messages:[{role:'user',content:user}]})});
+  d=await r.json();if(!r.ok)throw new Error(d.error&&d.error.message||('HTTP '+r.status));
+  return(d.content||[]).map(x=>x.text||'').join('');
+ }
+ const url=p==='groq'?'https://api.groq.com/openai/v1/chat/completions':'https://api.openai.com/v1/chat/completions';
+ const body={model,messages:[{role:'system',content:system},{role:'user',content:user}]};if(p==='groq')body.max_tokens=6000;
+ r=await fetch(url,{method:'POST',headers:{'content-type':'application/json','authorization':'Bearer '+key},body:JSON.stringify(body)});
+ d=await r.json();if(!r.ok)throw new Error(d.error&&d.error.message||('HTTP '+r.status));
+ return d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content||'';
+}
+function cands(i){return[S.slots[i],...ORDER].filter((p,k,a)=>a.indexOf(p)===k&&S.keys[p])}
+let outs=[],finalCode='';
+$('go').onclick=async()=>{
+ const prompt=$('prompt').value.trim();
+ if(!prompt){status('اكتب طلبك أولًا.');return}
+ if(!ORDER.some(p=>S.keys[p])){status('أضف مفتاحًا واحدًا على الأقل من ⚙.');renderCfg();$('dlg').showModal();return}
+ $('go').disabled=true;$('res').hidden=true;reset();outs=[];let ctx=prompt,ok=true;
+ for(let i=0;i<4;i++){
+  setSt(i,'active','أفكّر…','');status('الدور '+(i+1)+' من ٤: '+ROLES[i].name);
+  let text=null,used=null,err=null;
+  for(const p of cands(i)){
+   try{$('t2-'+i).textContent=P[p].label;text=await call(p,ROLES[i].sys,ctx);if(text){used=p;break}}catch(e){err=e;}
+  }
+  if(!text){setSt(i,'err','تعذّر الاتصال','راجع المفتاح');status('فشل '+ROLES[i].name+': '+(err?err.message:'لا يوجد رد')+' — تحقق من المفتاح أو من حدود الاستخدام المجاني.');ok=false;break}
+  outs.push({n:ROLES[i].name,p:P[used].label,t:text});setSt(i,'done','انتهيت','عبر '+P[used].label);
+  ctx='الطلب الأصلي:\n'+prompt+'\n\nمخرجات '+ROLES[i].name+':\n'+text;
+ }
+ $('go').disabled=false;
+ if(ok){status('اكتمل البناء.');show()}else if(outs.length){show(true)}
+};
+function show(partial){
+ const last=outs[outs.length-1].t;
+ const m=last.match(/```html\s*([\s\S]*?)```/i);
+ finalCode=m?m[1].trim():(/<html|<!doctype/i.test(last)?last:'');
+ $('res').hidden=false;
+ $('pv').style.display=finalCode?'':'none';
+ if(finalCode)$('pv').srcdoc=finalCode;
+ $('outs').innerHTML='';
+ outs.forEach(o=>{const d=document.createElement('details');const s=document.createElement('summary');s.textContent=o.n+' — '+o.p;const pr=document.createElement('pre');pr.textContent=o.t;d.append(s,pr);$('outs').append(d)});
+ if(!finalCode)status(partial?'توقفت العملية، وهذه مخرجات ما أُنجز.':'لم يُنتج ملف HTML كامل؛ راجع المخرجات.');
+}
+$('full').onclick=()=>{const f=$('pv');f.classList.toggle('full');$('full').textContent=f.classList.contains('full')?'إغلاق ملء الشاشة':'ملء الشاشة'};
+$('copy').onclick=async()=>{try{await navigator.clipboard.writeText(finalCode);status('تم نسخ الشيفرة.')}catch(e){const t=document.createElement('textarea');t.value=finalCode;document.body.append(t);t.select();document.execCommand('copy');t.remove();status('تم نسخ الشيفرة.')}};
+</script>
+</body>
+</html>

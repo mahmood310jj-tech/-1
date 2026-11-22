@@ -1,0 +1,11 @@
+{
+  "name": "ai-room-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "غرفة الذكاء الاصطناعي — تطبيق أندرويد",
+  "dependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/cli": "^6.2.0",
+    "@capacitor/core": "^6.2.0"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "appId": "com.mahmood.airoom",
+  "appName": "غرفة الذكاء الاصطناعي",
+  "webDir": "www",
+  "plugins": {
+    "CapacitorHttp": { "enabled": true }
+  }
+}
